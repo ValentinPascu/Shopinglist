@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ro">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🛒 Listă Cumpărături</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="language-selector">
+        <button onclick="changeLanguage('ro')" class="active">🇷🇴 RO</button>
+        <button onclick="changeLanguage('en')">🇬🇧 EN</button>
+        <button onclick="changeLanguage('de')">🇩🇪 DE</button>
+        <button onclick="changeLanguage('ru')">🇷🇺 RU</button>
+      </div>
+
+      <h1 id="appTitle">📝 Listă Cumpărături</h1>
+
+      <div class="controls">
+        <input type="text" id="itemInput" placeholder="Nume produs..." />
+        <select id="categorySelect">
+          <option value="food" id="categoryFood">Alimente</option>
+          <option value="drinks" id="categoryDrinks">Băuturi</option>
+          <option value="cleaning" id="categoryCleaning">Curățenie</option>
+          <option value="other" id="categoryOther">Altele</option>
+        </select>
+        <input
+          type="number"
+          id="quantityInput"
+          min="1"
+          value="1"
+          placeholder="Cantitate"
+        />
+        <button onclick="addItem()" id="addButton">Adaugă</button>
+      </div>
+
+      <div class="sort-controls">
+        <select id="sortSelect" onchange="sortItems()">
+          <option value="name" id="sortName">Sortează după nume</option>
+          <option value="date" id="sortDate">Sortează după dată</option>
+          <option value="category" id="sortCategory">
+            Sortează după categorie
+          </option>
+        </select>
+        <button
+          class="sort-btn"
+          onclick="toggleSortOrder()"
+          id="sortOrderButton"
+        >
+          ↑↓
+        </button>
+      </div>
+
+      <ul id="shoppingList"></ul>
+    </div>
+
+    <script src="translations.js"></script>
+    <script src="cookies.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

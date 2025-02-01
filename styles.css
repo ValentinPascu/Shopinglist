@@ -1,0 +1,134 @@
+:root {
+  --primary: #2c3e50;
+  --secondary: #3498db;
+  --danger: #e74c3c;
+  --success: #27ae60;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #ecf0f1;
+}
+
+.container {
+  background: white;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: 1fr 120px 100px 100px;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+input,
+select,
+button {
+  padding: 12px;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+button {
+  background-color: var(--primary);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+.delete-btn {
+  background-color: var(--danger);
+}
+
+.sort-btn {
+  background-color: var(--success);
+}
+
+.language-selector {
+  margin-bottom: 20px;
+  text-align: right;
+}
+
+.language-selector button {
+  margin: 0 5px;
+  padding: 8px 12px;
+  background: #ddd;
+  color: var(--primary);
+  border: none;
+}
+
+.language-selector button.active {
+  background: var(--primary);
+  color: white;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.list-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  margin: 10px 0;
+  background: #f8f9fa;
+  border-radius: 8px;
+  transition: all 0.3s;
+}
+
+.list-item:hover {
+  transform: translateX(5px);
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.item-content {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.category {
+  font-size: 0.8em;
+  padding: 4px 8px;
+  border-radius: 15px;
+  background: #e8f4ff;
+}
+
+.quantity {
+  width: 60px;
+  padding: 5px;
+  text-align: center;
+}
+
+.purchased {
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+.edit-input {
+  border: none;
+  border-bottom: 2px solid var(--secondary);
+  background: transparent;
+  font-size: 16px;
+}
+
+@media (max-width: 768px) {
+  .controls {
+    grid-template-columns: 1fr;
+  }
+}
