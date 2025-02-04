@@ -132,3 +132,62 @@ ul {
     grid-template-columns: 1fr;
   }
 }
+
+/* Stiluri pentru formularul de logare și înregistrare */
+#auth-container,
+#register-container {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+#auth-container h1,
+#register-container h1 {
+  margin-bottom: 20px;
+}
+
+#auth-container form,
+#register-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#auth-container input,
+#register-container input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+#auth-container button,
+#register-container button {
+  padding: 10px;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#auth-container button:hover,
+#register-container button:hover {
+  opacity: 0.9;
+}
+
+#auth-container a,
+#register-container a {
+  color: var(--secondary);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+#auth-container a:hover,
+#register-container a:hover {
+  color: var(--primary);
+}

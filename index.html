@@ -1,62 +1,460 @@
 <!DOCTYPE html>
-<html lang="ro">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>🛒 Listă Cumpărături</title>
-    <link rel="stylesheet" href="styles.css" />
+    <title>Shopping List</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #f0f0f0;
+      }
+
+      .container {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .language-switcher {
+        text-align: right;
+        margin-bottom: 20px;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+      }
+
+      .input-section {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      input[type="text"] {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+
+      button {
+        padding: 10px 20px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      button:hover {
+        background-color: #45a049;
+      }
+
+      ul {
+        list-style-type: none;
+        margin-top: 20px;
+      }
+
+      li {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        background-color: #f8f8f8;
+        margin-bottom: 5px;
+        border-radius: 5px;
+        gap: 10px;
+      }
+
+      li.completed {
+        background-color: #e0e0e0;
+        text-decoration: line-through;
+        opacity: 0.7;
+      }
+
+      .delete-btn {
+        margin-left: auto;
+        background-color: #ff4444;
+        padding: 5px 10px;
+        border-radius: 3px;
+      }
+
+      .delete-btn:hover {
+        background-color: #cc0000;
+      }
+
+      .auth-page {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .auth-form {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 300px;
+      }
+
+      .auth-form h2 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .auth-form input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+
+      .auth-options {
+        text-align: center;
+        margin-top: 15px;
+      }
+
+      .auth-options a {
+        color: #4caf50;
+        cursor: pointer;
+        text-decoration: underline;
+      }
+
+      .error-message {
+        color: red;
+        margin-bottom: 10px;
+        text-align: center;
+      }
+
+      .logout-btn {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background-color: #ff4444;
+      }
+    </style>
   </head>
   <body>
     <div class="container">
-      <div class="language-selector">
-        <button onclick="changeLanguage('ro')" class="active">🇷🇴 RO</button>
-        <button onclick="changeLanguage('en')">🇬🇧 EN</button>
-        <button onclick="changeLanguage('de')">🇩🇪 DE</button>
-        <button onclick="changeLanguage('ru')">🇷🇺 RU</button>
+      <!-- Authentication Page -->
+      <div id="authPage" class="auth-page">
+        <div class="language-switcher">
+          <select id="languageSelect">
+            <option value="ro">Română</option>
+            <option value="de">Deutsch</option>
+          </select>
+        </div>
+
+        <!-- Login Form -->
+        <form id="loginForm" class="auth-form">
+          <h2 data-i18n="loginTitle">Autentificare</h2>
+          <div class="error-message" id="loginError"></div>
+          <input
+            type="text"
+            id="loginUsername"
+            data-i18n-placeholder="username"
+            placeholder="Utilizator"
+          />
+          <input
+            type="password"
+            id="loginPassword"
+            data-i18n-placeholder="password"
+            placeholder="Parolă"
+          />
+          <button type="button" onclick="login()" data-i18n="loginButton">
+            Autentificare
+          </button>
+          <div class="auth-options">
+            <a onclick="showRegisterForm()" data-i18n="registerLink"
+              >Creați un cont nou</a
+            >
+          </div>
+        </form>
+
+        <!-- Register Form -->
+        <form id="registerForm" class="auth-form" style="display: none">
+          <h2 data-i18n="registerTitle">Înregistrare</h2>
+          <div class="error-message" id="registerError"></div>
+          <input
+            type="text"
+            id="registerUsername"
+            data-i18n-placeholder="username"
+            placeholder="Utilizator"
+          />
+          <input
+            type="password"
+            id="registerPassword"
+            data-i18n-placeholder="password"
+            placeholder="Parolă"
+          />
+          <button type="button" onclick="register()" data-i18n="registerButton">
+            Înregistrare
+          </button>
+          <div class="auth-options">
+            <a onclick="showLoginForm()" data-i18n="loginLink"
+              >Aveți deja un cont? Autentificați-vă</a
+            >
+          </div>
+        </form>
       </div>
 
-      <h1 id="appTitle">📝 Listă Cumpărături</h1>
-
-      <div class="controls">
-        <input type="text" id="itemInput" placeholder="Nume produs..." />
-        <select id="categorySelect">
-          <option value="food" id="categoryFood">Alimente</option>
-          <option value="drinks" id="categoryDrinks">Băuturi</option>
-          <option value="cleaning" id="categoryCleaning">Curățenie</option>
-          <option value="other" id="categoryOther">Altele</option>
-        </select>
-        <input
-          type="number"
-          id="quantityInput"
-          min="1"
-          value="1"
-          placeholder="Cantitate"
-        />
-        <button onclick="addItem()" id="addButton">Adaugă</button>
-      </div>
-
-      <div class="sort-controls">
-        <select id="sortSelect" onchange="sortItems()">
-          <option value="name" id="sortName">Sortează după nume</option>
-          <option value="date" id="sortDate">Sortează după dată</option>
-          <option value="category" id="sortCategory">
-            Sortează după categorie
-          </option>
-        </select>
-        <button
-          class="sort-btn"
-          onclick="toggleSortOrder()"
-          id="sortOrderButton"
-        >
-          ↑↓
+      <!-- Main Application Page (hidden by default) -->
+      <div id="appPage" style="display: none">
+        <button class="logout-btn" onclick="logout()" data-i18n="logout">
+          Deconectare
         </button>
-      </div>
+        <h1 data-i18n="title">Listă de cumpărături</h1>
 
-      <ul id="shoppingList"></ul>
+        <div class="input-section">
+          <input
+            type="text"
+            id="itemInput"
+            placeholder="Add new item"
+            data-i18n-placeholder="addPlaceholder"
+          />
+          <button onclick="addItem()" data-i18n="addButton">Adăugare</button>
+        </div>
+
+        <ul id="shoppingList"></ul>
+      </div>
     </div>
 
-    <script src="translations.js"></script>
-    <script src="cookies.js"></script>
-    <script src="app.js"></script>
+    <script>
+      // Consolidated translations
+      const translations = {
+        ro: {
+          title: "Listă de cumpărături",
+          addPlaceholder: "Adaugă articol nou",
+          addButton: "Adăugare",
+          completed: "Finalizat",
+          delete: "Șterge",
+          loginTitle: "Autentificare",
+          registerTitle: "Înregistrare",
+          username: "Utilizator",
+          password: "Parolă",
+          loginButton: "Autentificare",
+          registerButton: "Înregistrare",
+          registerLink: "Creați un cont nou",
+          loginLink: "Aveți deja un cont? Autentificați-vă",
+          logout: "Deconectare",
+          errorUserExists: "Utilizatorul există deja!",
+          errorInvalidCredentials: "Date de autentificare invalide!",
+          errorShortPassword: "Parola trebuie să aibă minim 6 caractere!",
+        },
+        de: {
+          title: "Einkaufsliste",
+          addPlaceholder: "Neuer Artikel",
+          addButton: "Hinzufügen",
+          completed: "Erledigt",
+          delete: "Löschen",
+          loginTitle: "Anmeldung",
+          registerTitle: "Registrierung",
+          username: "Benutzername",
+          password: "Passwort",
+          loginButton: "Anmelden",
+          registerButton: "Registrieren",
+          registerLink: "Neues Konto erstellen",
+          loginLink: "Haben Sie bereits ein Konto? Anmelden",
+          logout: "Abmelden",
+          errorUserExists: "Benutzer existiert bereits!",
+          errorInvalidCredentials: "Ungültige Anmeldedaten!",
+          errorShortPassword: "Passwort muss mindestens 6 Zeichen haben!",
+        },
+      };
+
+      let currentLanguage = "ro";
+      let currentUser = null;
+      const users = JSON.parse(localStorage.getItem("users") || "[]");
+
+      // Language management
+      document
+        .getElementById("languageSelect")
+        .addEventListener("change", (e) => {
+          currentLanguage = e.target.value;
+          updateTranslations();
+        });
+
+      function updateTranslations() {
+        document.querySelectorAll("[data-i18n]").forEach((element) => {
+          const key = element.getAttribute("data-i18n");
+          element.textContent = translations[currentLanguage][key];
+        });
+
+        document
+          .querySelectorAll("[data-i18n-placeholder]")
+          .forEach((element) => {
+            const key = element.getAttribute("data-i18n-placeholder");
+            element.placeholder = translations[currentLanguage][key];
+          });
+      }
+
+      // Authentication functions
+      function showRegisterForm() {
+        document.getElementById("loginForm").style.display = "none";
+        document.getElementById("registerForm").style.display = "block";
+        clearErrors();
+      }
+
+      function showLoginForm() {
+        document.getElementById("registerForm").style.display = "none";
+        document.getElementById("loginForm").style.display = "block";
+        clearErrors();
+      }
+
+      function clearErrors() {
+        document.getElementById("loginError").textContent = "";
+        document.getElementById("registerError").textContent = "";
+      }
+
+      function register() {
+        const username = document
+          .getElementById("registerUsername")
+          .value.trim();
+        const password = document
+          .getElementById("registerPassword")
+          .value.trim();
+
+        if (password.length < 6) {
+          document.getElementById("registerError").textContent =
+            translations[currentLanguage].errorShortPassword;
+          return;
+        }
+
+        if (users.some((user) => user.username === username)) {
+          document.getElementById("registerError").textContent =
+            translations[currentLanguage].errorUserExists;
+          return;
+        }
+
+        users.push({ username, password, items: [] });
+        localStorage.setItem("users", JSON.stringify(users));
+        showLoginForm();
+      }
+
+      function login() {
+        const username = document.getElementById("loginUsername").value.trim();
+        const password = document.getElementById("loginPassword").value.trim();
+
+        const user = users.find(
+          (user) => user.username === username && user.password === password
+        );
+
+        if (user) {
+          currentUser = user;
+          document.getElementById("authPage").style.display = "none";
+          document.getElementById("appPage").style.display = "block";
+          loadUserItems();
+        } else {
+          document.getElementById("loginError").textContent =
+            translations[currentLanguage].errorInvalidCredentials;
+        }
+      }
+
+      function logout() {
+        currentUser = null;
+        document.getElementById("authPage").style.display = "block";
+        document.getElementById("appPage").style.display = "none";
+        clearFormFields();
+      }
+
+      // Shopping list functions
+      function loadUserItems() {
+        const list = document.getElementById("shoppingList");
+        list.innerHTML = "";
+
+        if (currentUser?.items) {
+          currentUser.items.forEach((item) => {
+            const li = createListItem(item.text, item.completed);
+            list.appendChild(li);
+          });
+        }
+        updateTranslations();
+      }
+
+      function createListItem(text, completed = false) {
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <input type="checkbox" ${
+            completed ? "checked" : ""
+          } onchange="toggleCompleted(this)">
+          <span>${text}</span>
+          <button class="delete-btn" onclick="deleteItem(this)" data-i18n="delete"></button>
+        `;
+        if (completed) li.classList.add("completed");
+        return li;
+      }
+
+      function saveItems() {
+        const items = Array.from(
+          document.querySelectorAll("#shoppingList li")
+        ).map((li) => ({
+          text: li.querySelector("span").textContent,
+          completed: li.classList.contains("completed"),
+        }));
+
+        if (currentUser) {
+          currentUser.items = items;
+          localStorage.setItem("users", JSON.stringify(users));
+        }
+      }
+
+      function addItem() {
+        const input = document.getElementById("itemInput");
+        const text = input.value.trim();
+
+        if (text) {
+          const li = createListItem(text);
+          document.getElementById("shoppingList").appendChild(li);
+          input.value = "";
+          saveItems();
+          updateTranslations();
+        }
+      }
+
+      function deleteItem(button) {
+        button.closest("li").remove();
+        saveItems();
+      }
+
+      function toggleCompleted(checkbox) {
+        const li = checkbox.closest("li");
+        li.classList.toggle("completed");
+        saveItems();
+      }
+
+      function clearFormFields() {
+        document.getElementById("loginUsername").value = "";
+        document.getElementById("loginPassword").value = "";
+        document.getElementById("registerUsername").value = "";
+        document.getElementById("registerPassword").value = "";
+      }
+
+      // Event listeners
+      document.getElementById("itemInput").addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          addItem();
+        }
+      });
+
+      // Initial setup
+      document.getElementById("authPage").style.display = "block";
+      document.getElementById("appPage").style.display = "none";
+      updateTranslations();
+    </script>
   </body>
 </html>

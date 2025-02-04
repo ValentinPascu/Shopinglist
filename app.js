@@ -198,3 +198,13 @@ setActiveLanguageButton();
 document.getElementById("itemInput").addEventListener("keypress", (e) => {
   if (e.key === "Enter") addItem();
 });
+
+// Înlocuiește funcția saveAndRender
+function saveAndRender() {
+  saveUserData(); // Salvează datele utilizatorului
+  renderList();
+}
+
+// Înlocuiește inițializarea la începutul fișierului
+let items = [];
+checkLoggedIn(); // Verifică dacă utilizatorul este logat
